@@ -3,26 +3,13 @@ dataset = dict(
     type="VariableVideoTextDataset",
     transform_name="resize_crop",
 )
-bucket_config = {  # 2s/it
-    "144p": {1: (0.5, 48), 34: (1.0, 2), 51: (1.0, 4), 102: (1.0, 2), 204: (1.0, 1)},
-    # ---
-    "256": {1: (0.6, 20), 34: (0.5, 2), 51: (0.5, 1), 68: (0.5, 1), 136: (0.0, None)},
-    "240p": {1: (0.6, 20), 34: (0.5, 2), 51: (0.5, 1), 68: (0.5, 1), 136: (0.0, None)},
-    # ---
-    "360p": {1: (0.5, 8), 34: (0.2, 1), 102: (0.0, None)},
-    "512": {1: (0.5, 8), 34: (0.2, 1), 102: (0.0, None)},
-    # ---
-    "480p": {1: (0.2, 4), 17: (0.3, 1), 68: (0.0, None)},
-    # ---
-    "720p": {1: (0.1, 2)},
-    "1024": {1: (0.1, 2)},
-    # ---
-    "1080p": {1: (0.1, 1)},
-}
-grad_checkpoint = False
+
+# webvid
+bucket_config = {"480p": {51: (0.5, 5)}}
+grad_checkpoint = True
 
 # Acceleration settings
-num_workers = 8
+num_workers = 0
 num_bucket_build_workers = 16
 dtype = "bf16"
 plugin = "zero2"
@@ -34,6 +21,7 @@ model = dict(
     qk_norm=True,
     enable_flash_attn=True,
     enable_layernorm_kernel=True,
+    freeze_y_embedder=True,
 )
 vae = dict(
     type="OpenSoraVAE_V1_2",
@@ -55,17 +43,18 @@ scheduler = dict(
 )
 
 # Mask settings
+# 25%
 mask_ratios = {
-    "random": 0.2,
-    "intepolate": 0.01,
-    "quarter_random": 0.01,
-    "quarter_head": 0.01,
-    "quarter_tail": 0.01,
-    "quarter_head_tail": 0.01,
-    "image_random": 0.05,
-    "image_head": 0.1,
-    "image_tail": 0.05,
-    "image_head_tail": 0.05,
+    "random": 0.01,
+    "intepolate": 0.002,
+    "quarter_random": 0.002,
+    "quarter_head": 0.002,
+    "quarter_tail": 0.002,
+    "quarter_head_tail": 0.002,
+    "image_random": 0.0,
+    "image_head": 0.22,
+    "image_tail": 0.005,
+    "image_head_tail": 0.005,
 }
 
 # Log settings
@@ -74,7 +63,7 @@ outputs = "outputs"
 wandb = False
 epochs = 1000
 log_every = 10
-ckpt_every = 500
+ckpt_every = 200
 
 # optimization settings
 load = None
@@ -82,3 +71,4 @@ grad_clip = 1.0
 lr = 1e-4
 ema_decay = 0.99
 adam_eps = 1e-15
+warmup_steps = 1000

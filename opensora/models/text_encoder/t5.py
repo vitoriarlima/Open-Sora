@@ -97,10 +97,6 @@ class T5Embedder:
         self.use_text_preprocessing = use_text_preprocessing
         self.hf_token = hf_token
 
-<<<<<<< HEAD
-        #assert from_pretrained in self.available_models
-=======
->>>>>>> main
         self.tokenizer = AutoTokenizer.from_pretrained(
             from_pretrained,
             cache_dir=cache_dir,
