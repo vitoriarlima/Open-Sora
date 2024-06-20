@@ -448,7 +448,11 @@ class STDiT3(PreTrainedModel):
 @MODELS.register_module("STDiT3-XL/2")
 def STDiT3_XL_2(from_pretrained=None, **kwargs):
     force_huggingface = kwargs.pop("force_huggingface", True)
+<<<<<<< HEAD
     if force_huggingface or (from_pretrained is not None and not os.path.isdir(from_pretrained)):
+=======
+    if force_huggingface or from_pretrained is not None and not os.path.isdir(from_pretrained):
+>>>>>>> main
         model = STDiT3.from_pretrained(from_pretrained, **kwargs)
     else:
         config = STDiT3Config(depth=28, hidden_size=1152, patch_size=(1, 2, 2), num_heads=16, **kwargs)
