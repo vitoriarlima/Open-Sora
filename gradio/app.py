@@ -24,7 +24,7 @@ WATERMARK_PATH = "./assets/images/watermark/watermark.png"
 CONFIG_MAP = {
     "v1.2-stage3": "configs/opensora-v1-2/inference/sample.py",
 }
-HF_STDIT_MAP = {"v1.2-stage3": "hpcai-tech/OpenSora-STDiT-v3"}
+HF_STDIT_MAP = {"v1.2-stage3": "/root/commonData/OpenSora-STDiT-v3"}
 
 
 # ============================
@@ -100,7 +100,7 @@ def build_models(model_type, config, enable_optimization=False):
     # handle model download logic in HuggingFace Space
     from opensora.models.stdit.stdit3 import STDiT3
 
-    model_kwargs = {k: v for k, v in config.model.items() if k not in ("type", "from_pretrained")}
+    model_kwargs = {k: v for k, v in config.model.items() if k not in ("type", "from_pretrained", "force_huggingface")}
     stdit = STDiT3.from_pretrained(HF_STDIT_MAP[model_type], **model_kwargs)
     stdit = stdit.cuda()
 
